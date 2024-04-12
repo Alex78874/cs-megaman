@@ -1,0 +1,48 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "testing_level.tmx",
+    "automapping.whileDrawing": true,
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        ":/automap-tiles.tsx": {
+            "scaleInDock": 1
+        },
+        "Rules/autotilerules.tmx": {
+            "scale": 1.0327,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 504.5027597559796,
+                "y": 284.6906168296698
+            }
+        },
+        "grass_tileset.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 5.28
+        },
+        "testing_level.tmx": {
+            "scale": 1.1622,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 515.4018241266564,
+                "y": 355.36052314575807
+            }
+        }
+    },
+    "last.imagePath": "/home/syn/raylib-test-game/res/map",
+    "map.lastUsedFormat": "tmx",
+    "openFiles": [
+        "testing_level.tmx",
+        "Rules/autotilerules.tmx"
+    ],
+    "project": "untitled.tiled-project",
+    "recentFiles": [
+        "Rules/autotilerules.tmx",
+        "testing_level.tmx",
+        "grass_tileset.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}
