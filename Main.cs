@@ -12,6 +12,10 @@ class Program
 
         const int screenWidth = 800;
         const int screenHeight = 450;
+        // Calculate how many tiles can fit in the screen
+        // int tilesX = screenWidth / 32;
+        // int tilesY = screenHeight / 32;
+
 
         Raylib.InitWindow(screenWidth, screenHeight, "Game");
         // Raylib.ToggleFullscreen();
@@ -33,8 +37,9 @@ class Program
         // Add the crate to the list of instances
         instances.Add(crate);
 
-
-        Map map = new Map(10, 10, 32);
+        // Create the map from example_stage JSON file
+        int[,] stage = Map.ConvertJsonFileToMap("res/stage/example_stage.json") ?? new int[0, 0];
+        Map map = new Map(stage);
 
         // Main game loop
         while (!Raylib.WindowShouldClose())

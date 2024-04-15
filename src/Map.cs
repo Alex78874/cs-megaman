@@ -7,26 +7,20 @@ public class Map
     public Tile[,] blocks;
     public int rows;
     public int cols;
-    public int blockSize;
+    public int blockSize = 32;
 
-    int[,] map = new int[10,10] {
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 12, 12, 12, 12, 12, 12, 12, 12, 12, 12 }
-    };
-
-    public Map(int rows, int cols, int blockSize)
+    public Map(int[,]? map = null)
     {
-        this.rows = rows;
-        this.cols = cols;
-        this.blockSize = blockSize;
+        if (map == null)
+        {
+            rows = 0;
+            cols = 0;
+            blocks = new Tile[0, 0];
+            return;
+        }
+
+        rows = map.GetLength(0);
+        cols = map.GetLength(1);
 
         blocks = new Tile[rows, cols];
 
@@ -44,21 +38,65 @@ public class Map
         }
     }
 
-    public Map ConvertJsonFileToMap(string jsonFile)
+    public void MakeFloor()
     {
-        // Read the JSON file
-        string json = File.ReadAllText(jsonFile);
-        // Check if the JSON string is null or empty
-        // Return an empty Map object if it is
-        if (string.IsNullOrEmpty(json)) {
-            return new Map(0, 0, 0);
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                // Create floor if block is at the bottom of the map
+                if (i == rows - 1)
+                {
+                    blocks[i, j] = new Tile(blockSize, 14);
+                    blocks[i, j].position.X = j * blockSize;
+                    blocks[i, j].position.Y = i * blockSize;
+                }
+            }
         }
-        // Deserialize the JSON file
-        Map map = JsonConvert.DeserializeObject<Map>(json, new JsonSerializerSettings {
-            NullValueHandling = NullValueHandling.Ignore
-        }) ?? new Map(0, 0, 0);
-        
+    }
+
+    // Convert a JSON file to a map array
+    // The JSON file must have a "stage" property with a 2D array of integers
+    // if the JSON file is empty or invalid, it will return a Map object with 0 rows and 0 cols
+    // if the JSON file is valid, it will return a Map object with the rows, cols and blocks
+    public static int[,]? ConvertJsonFileToMap(string jsonFile)
+    {
+        string json = File.ReadAllText(jsonFile);
+        int[,]? map = null;
+
+        if (string.IsNullOrEmpty(json))
+        {
+            Console.WriteLine("Empty JSON file.");
+            return null;
+        }
+
+        var mapData = JsonConvert.DeserializeObject<MapData>(json);
+        if (mapData != null && mapData.stage != null)
+        {
+            int rows = mapData.stage.Length;
+            int cols = mapData.stage[0].Length;
+            map = new int[rows, cols];
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    map[i, j] = mapData.stage[i][j];
+                    Console.Write(map[i, j] + " ");
+                }
+            }
+            Console.WriteLine("Map loaded successfully.");
+        }
+        else
+        {
+            Console.WriteLine("Invalid JSON file format.");
+        }
         return map;
+    }
+
+    private class MapData
+    {
+        public int[][]? stage { get; set; }
     }
 
     public void Update()
