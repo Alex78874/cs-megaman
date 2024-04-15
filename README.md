@@ -1,4 +1,4 @@
-# Reproduction d'un jeu de type Megaman en C# à l'aide de la bibliothèque Raylib
+# Jeu de type Megaman en C# à l'aide de la bibliothèque Raylib
 
 ## Instructions
 
