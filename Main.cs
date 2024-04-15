@@ -4,7 +4,7 @@ using Raylib_cs;
 
 class Program
 {
-    public static List<Block> instances = new List<Block>();
+    public static List<Item> instances = new List<Item>();
 
     static void Main(string[] args)
     {
@@ -14,6 +14,7 @@ class Program
         const int screenHeight = 450;
 
         Raylib.InitWindow(screenWidth, screenHeight, "Game");
+        // Raylib.ToggleFullscreen();
         // Adapt the screen to the monitor's refresh rate
         if (Raylib.IsWindowReady()) {
             Raylib.SetTargetFPS(Raylib.GetMonitorRefreshRate(0));
@@ -26,11 +27,14 @@ class Program
         Player player = new Player();
         Cursor cursor = new Cursor();
 
-        Block block = new Block(30);
-        block.position = new Vector2(400, 225);
 
-        // Add a block to the list of instances
-        instances.Add(block);
+        Item crate = new Item(30, 1);
+        crate.position = new Vector2(400, 225);
+        // Add the crate to the list of instances
+        instances.Add(crate);
+
+
+        Map map = new Map(10, 10, 32);
 
         // Main game loop
         while (!Raylib.WindowShouldClose())
@@ -42,13 +46,16 @@ class Program
             Input.HandleInput(player, cursor);
             cursor.Update();
             player.UpdateMovementState();
+            map.Update();
 
             Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.Black);
 
+                // Draw the map
+                map.Draw();
                 // Draw all entities
                 player.Draw();
-                block.Draw();
+                crate.Draw();
                 // Draw the cursor
                 cursor.Draw();
 

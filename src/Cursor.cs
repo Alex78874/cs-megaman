@@ -37,13 +37,13 @@ public class Cursor
         position.Y = Raylib.GetMousePosition().Y;
 
         // Check if hovering on class Square
-        if (IsHoveringOnBlock() && !hasChangedCursor)
+        if (IsHoveringOnItem() && !hasChangedCursor)
         {
             SetCursor("res/Cursor/attack.png");
             hasChangedCursor = true;
             rotationAngle = 0f; // Reset rotation angle when hovering
         }
-        else if (!IsHoveringOnBlock() && hasChangedCursor)
+        else if (!IsHoveringOnItem() && hasChangedCursor)
         {
             SetCursor("res/Cursor/pointer.png");
             hasChangedCursor = false;
@@ -57,16 +57,16 @@ public class Cursor
         }
     }
 
-    private bool IsHoveringOnBlock()
+    private bool IsHoveringOnItem()
     {
         // Get the position of the cursor
         Vector2 cursorPosition = new Vector2(position.X, position.Y);
 
         // Iterate through all the instances of the Square class
-        foreach (Block block in Program.instances)
+        foreach (Item item in Program.instances)
         {
             // Get the position and size of the square
-            Rectangle squareBounds = new Rectangle(block.position.X, block.position.Y, block.size, block.size);
+            Rectangle squareBounds = new Rectangle(item.position.X, item.position.Y, item.size, item.size);
             // Check if the cursor position is within the bounds of the square
             if (Raylib.CheckCollisionPointRec(cursorPosition, squareBounds))
             {
