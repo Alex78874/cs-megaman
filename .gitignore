@@ -1,0 +1,19 @@
+# Ignore bin and obj directories
+bin/
+obj/
+
+# Ignore build files
+*.exe
+*.dll
+*.pdb
+
+# Ignore cache files
+*.cache
+*.bak
+*.swp
+*.swo
+
+# Ignore temporary files
+*.tmp
+*.temp
+*.log

@@ -3,13 +3,13 @@ using System.Numerics;
 
 public class Input
 {
-    public static void HandlePlayerMovement(Player player, Vector2 mousePos)
+    public static void HandlePlayerMovement(Player player, Cursor cursor)
     {
         // Orient player to mouse
-        // player.Orient(mousePos.X, mousePos.Y);
+        player.Orient(cursor);
 
         // Sprinting
-        int speed = Raylib.IsKeyDown(KeyboardKey.LeftShift) ? 10 : 5;
+        int speed = Raylib.IsKeyDown(KeyboardKey.LeftShift) ? 300 : 150;
 
         if (Raylib.IsKeyDown(KeyboardKey.Right) || Raylib.IsKeyDown(KeyboardKey.D))
         {
@@ -30,8 +30,8 @@ public class Input
         }
     }
 
-    public static void HandleInput(Player player, Vector2 mousePos)
+    public static void HandleInput(Player player, Cursor cursor)
     {
-        HandlePlayerMovement(player, mousePos); // Keyboard Movement
+        HandlePlayerMovement(player, cursor); // Keyboard Movement
     }
 }

@@ -61,8 +61,8 @@ public class Player
         {
             float speed = MathF.Sqrt(x * x + y * y); // Calculate speed based on x and y values
 
-            position.X +=  x;
-            position.Y +=  y;
+            position.X += x * Utils.DeltaTime;
+            position.Y += y * Utils.DeltaTime;
         }
         catch (Exception ex)
         {

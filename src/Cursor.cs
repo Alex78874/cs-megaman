@@ -25,6 +25,12 @@ public class Cursor
         sprite = Raylib.LoadTexture(path);
     }
 
+    public void Update()
+    {
+        position.X = Raylib.GetMousePosition().X;
+        position.Y = Raylib.GetMousePosition().Y;
+    }
+
     public void Draw()
     {
         Raylib.DrawTexture(sprite, (int)position.X, (int)position.Y, Raylib_cs.Color.White);
