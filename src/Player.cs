@@ -5,10 +5,9 @@ using System.Numerics;
 public class Player
 {
     private Texture2D sprite;
-
     public Vector2 position;
+    
     private float orientation;
-
     private float walkingSpeed = 5.0f;
     private float sprintingSpeed = 10.0f;
     private float speed;
