@@ -9,31 +9,24 @@ public class Input
         // player.Orient(mousePos.X, mousePos.Y);
 
         // Sprinting
-        if (Raylib.IsKeyDown(KeyboardKey.LeftShift))
-        {
-            player.isSprinting = true;
-        }
-        else
-        {
-            player.isSprinting = false;
-        }
+        int speed = Raylib.IsKeyDown(KeyboardKey.LeftShift) ? 10 : 5;
 
         if (Raylib.IsKeyDown(KeyboardKey.Right) || Raylib.IsKeyDown(KeyboardKey.D))
         {
-            player.Move(1, 0);
+            player.Move(speed, 0);
         }
         else if (Raylib.IsKeyDown(KeyboardKey.Left) || Raylib.IsKeyDown(KeyboardKey.A))
         {
-            player.Move(-1, 0);
+            player.Move(-speed, 0);
         }
 
         if (Raylib.IsKeyDown(KeyboardKey.Up) || Raylib.IsKeyDown(KeyboardKey.W))
         {
-            player.Move(0, -1);
+            player.Move(0, -speed);
         }
         else if (Raylib.IsKeyDown(KeyboardKey.Down) || Raylib.IsKeyDown(KeyboardKey.S))
         {
-            player.Move(0, 1);
+            player.Move(0, speed);
         }
     }
 

@@ -6,6 +6,8 @@ class Program
 {
     static void Main(string[] args)
     {
+        AppDomain.CurrentDomain.UnhandledException += Debuger.HandleException;
+
         const int screenWidth = 800;
         const int screenHeight = 450;
 
@@ -23,11 +25,13 @@ class Program
             Vector2 mousePos = Raylib.GetMousePosition();
             // Console.WriteLine($"X: {mousePos.X}, Y: {mousePos.Y}");          
 
+            player.UpdateMovementState();
             Input.HandleInput(player, mousePos);
 
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.Black);
             player.Draw();
+            Console.WriteLine($"Player is {player.movementState}");
             Raylib.EndDrawing();
         }
 

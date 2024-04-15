@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/syn/cs-raylib-game/cs-raylib-game.csproj": {}
+    "C:\\Users\\garib\\cs-raylib-game\\cs-raylib-game.csproj": {}
   },
   "projects": {
-    "/home/syn/cs-raylib-game/cs-raylib-game.csproj": {
+    "C:\\Users\\garib\\cs-raylib-game\\cs-raylib-game.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/syn/cs-raylib-game/cs-raylib-game.csproj",
+        "projectUniqueName": "C:\\Users\\garib\\cs-raylib-game\\cs-raylib-game.csproj",
         "projectName": "cs-raylib-game",
-        "projectPath": "/home/syn/cs-raylib-game/cs-raylib-game.csproj",
-        "packagesPath": "/home/syn/.nuget/packages/",
-        "outputPath": "/home/syn/cs-raylib-game/obj/",
+        "projectPath": "C:\\Users\\garib\\cs-raylib-game\\cs-raylib-game.csproj",
+        "packagesPath": "C:\\Users\\garib\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\garib\\cs-raylib-game\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/syn/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\garib\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -32,6 +32,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -54,18 +59,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.3, 8.0.3]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.103/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -1,12 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "uLMWzUKbNxXTbFZ7Nu3ZNpEeIhBIgUdbHxzmNDBnnm4DkTb3NRNdgH/IJ1zvqTHDsDEoosjf9NVYIv+yOtvizg==",
+  "dgSpecHash": "Xvmqy/iFlJPBpgK8BXHmEFbg6tkM+PlrznakhhUhL2QNNYi3jB9YOVWsNBEJ+ZUkDTRlfv+g5Ak1/8s0KwegsA==",
   "success": true,
-  "projectFilePath": "/home/syn/cs-raylib-game/cs-raylib-game.csproj",
+  "projectFilePath": "C:\\Users\\garib\\cs-raylib-game\\cs-raylib-game.csproj",
   "expectedPackageFiles": [
-    "/home/syn/.nuget/packages/raylib-cs/6.0.0/raylib-cs.6.0.0.nupkg.sha512",
-    "/home/syn/.nuget/packages/system.numerics.vectors/4.5.0/system.numerics.vectors.4.5.0.nupkg.sha512",
-    "/home/syn/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.3/microsoft.aspnetcore.app.ref.8.0.3.nupkg.sha512"
+    "C:\\Users\\garib\\.nuget\\packages\\raylib-cs\\6.0.0\\raylib-cs.6.0.0.nupkg.sha512",
+    "C:\\Users\\garib\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512"
   ],
   "logs": []
 }

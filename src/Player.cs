@@ -5,12 +5,24 @@ using System.Numerics;
 public class Player
 {
     private Texture2D sprite;
+
     private Vector2 position;
     private float orientation;
+
     private float walkingSpeed = 5.0f;
     private float sprintingSpeed = 10.0f;
     private float speed;
     public bool isSprinting { get; set; }
+
+    // Player movement states
+    public enum MovementState
+    {
+        Idle,
+        Walking,
+        Sprinting
+    }
+    public MovementState movementState;
+
 
     public Player()
     {
@@ -28,34 +40,60 @@ public class Player
 
     public void Draw()
     {
-        Rectangle src = new Rectangle(0.0f, 0.0f, sprite.Width, sprite.Height);
-        Rectangle dst = new Rectangle(position.X, position.Y, sprite.Width, sprite.Height);
+        try
+        {
+            Rectangle src = new Rectangle(0.0f, 0.0f, sprite.Width, sprite.Height);
+            Rectangle dst = new Rectangle(position.X, position.Y, sprite.Width, sprite.Height);
 
-        Vector2 origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
+            Vector2 origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
 
-        Raylib.DrawTexturePro(sprite, src, dst, origin, orientation, Color.White);
+            Raylib.DrawTexturePro(sprite, src, dst, origin, orientation, Color.White);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred in the Draw method: {ex.Message}");
+        }
     }
 
     public void Move(int x, int y)
     {
-        if (isSprinting)
+        try
         {
-            speed = sprintingSpeed;
+            float speed = MathF.Sqrt(x * x + y * y); // Calculate speed based on x and y values
+
+            position.X +=  x;
+            position.Y +=  y;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred in the Move method: {ex.Message}");
+        }
+    }
+
+    public void UpdateMovementState()
+    {
+        if (Math.Abs(position.X) > 0 || Math.Abs(position.Y) > 0)
+        {
+            movementState = isSprinting ? MovementState.Sprinting : MovementState.Walking;
         }
         else
         {
-            speed = walkingSpeed;
+            movementState = MovementState.Idle;
         }
-
-        position.X += speed * x;
-        position.Y += speed * y;
     }
 
     public void Orient(Cursor cursor)
     {
-        float distX = cursor.position.X - position.X;
-        float distY = cursor.position.Y - position.Y;
+        try
+        {
+            float distX = cursor.position.X - position.X;
+            float distY = cursor.position.Y - position.Y;
 
-        orientation = -MathF.Atan2(distX, distY) * (180 / MathF.PI);
+            orientation = -MathF.Atan2(distX, distY) * (180 / MathF.PI);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred in the Orient method: {ex.Message}");
+        }
     }
 }
