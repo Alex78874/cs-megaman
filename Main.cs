@@ -32,10 +32,8 @@ class Program
             
             mouse.Update();
 
-            // Draw the mouse position with DrawText
-            Utils.DrawText($"Mouse position: {mouse.position}", 15, 30, 20, Color.White);
-
-            Console.WriteLine($"Mouse position: {mouse.position}");
+            // Draw all the debuging values
+            Debug.DrawDebugingValues(player, mouse);
 
             player.UpdateMovementState();
             Input.HandleInput(player, mouse);
@@ -43,7 +41,6 @@ class Program
             Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.Black);
                 player.Draw();
-                Utils.DrawFPS(15, 15);
                 Console.WriteLine($"Player is {player.movementState}");
             Raylib.EndDrawing();
         }

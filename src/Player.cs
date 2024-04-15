@@ -6,7 +6,7 @@ public class Player
 {
     private Texture2D sprite;
 
-    private Vector2 position;
+    public Vector2 position;
     private float orientation;
 
     private float walkingSpeed = 5.0f;
