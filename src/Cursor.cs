@@ -6,11 +6,15 @@ public class Cursor
     private Texture2D sprite;
     public Vector2 position;
 
-    private bool isHoveringOnSquare;
-    private bool hasChangedCursor;
+    // Two mode : classic mode and building mode
+    public enum CursorMode
+    {
+        Classic,
+        Building
+    }
 
+    private bool hasChangedCursor;
     private float rotationAngle;
-    private float scale;
 
     public Cursor()
     {
@@ -41,13 +45,11 @@ public class Cursor
         {
             SetCursor("res/Cursor/attack.png");
             hasChangedCursor = true;
-            rotationAngle = 0f; // Reset rotation angle when hovering
         }
         else if (!IsHoveringOnItem() && hasChangedCursor)
         {
             SetCursor("res/Cursor/pointer.png");
             hasChangedCursor = false;
-            rotationAngle = 0f; // Reset rotation angle when stop hovering
         }
 
         // Animate the cursor when hovering

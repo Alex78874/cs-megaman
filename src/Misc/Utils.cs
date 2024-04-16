@@ -12,6 +12,15 @@ public class Utils
         // Log the exception, display it, or handle it as you wish
         Console.WriteLine("Unhandled exception caught: " + ex.Message);
     }
+
+    // Calculate how many tiles can fit in the screen
+    public static (int, int) CalculateTiles(int screenWidth, int screenHeight, int tileSize)
+    {
+        int tilesX = screenWidth / tileSize;
+        int tilesY = screenHeight / tileSize;
+
+        return (tilesX, tilesY);
+    }
     
     public static void DrawText(string text, int x, int y, int fontSize, Color color)
     {

@@ -99,6 +99,23 @@ public class Map
         public int[][]? stage { get; set; }
     }
 
+    public int[,] GetCurrentMap()
+    {
+        int[,] currentMap = new int[rows, cols];
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                currentMap[i, j] = blocks[i, j].type;
+                Console.Write(currentMap[i, j] + " ");
+            }
+            Console.WriteLine();
+        }
+
+        return currentMap;
+    }
+
     public void Update()
     {
         for (int i = 0; i < rows; i++)

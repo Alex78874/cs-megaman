@@ -1,24 +1,27 @@
 using System.Numerics;
 using Raylib_cs;
 
-public class Tile
+public class Item
 {
     public Vector2 position;
     public Texture2D sprite;
     public int size;
     public Color color;
 
+    public int type;
+
     private string tileDirectory;
 
-    public Tile(int tileSize, int type)
+    public Item(int tileSize, int type)
     {
+        this.type = type;
         tileDirectory = $"res/{GetType().Name}/{GetType().Name}_{type}.png";
         sprite = Raylib.LoadTexture(tileDirectory);
         size = tileSize;
         color = Color.White;
     }
 
-    ~Tile()
+    ~Item()
     {
         Raylib.UnloadTexture(sprite);
     }

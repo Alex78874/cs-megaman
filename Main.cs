@@ -10,11 +10,14 @@ class Program
     {
         AppDomain.CurrentDomain.UnhandledException += Utils.HandleException;
 
-        const int screenWidth = 800;
-        const int screenHeight = 450;
+        // const int screenWidth = 1920;
+        // const int screenHeight = 1080;
+        const int screenWidth = 1280;
+        const int screenHeight = 720;
+
         // Calculate how many tiles can fit in the screen
-        // int tilesX = screenWidth / 32;
-        // int tilesY = screenHeight / 32;
+        (int tilesX, int tilesY) = Utils.CalculateTiles(screenWidth, screenHeight, 32);
+        Console.WriteLine($"Tiles in X: {tilesX}, Tiles in Y: {tilesY}");
 
         bool grid = false;
 
