@@ -17,4 +17,27 @@ public class Utils
     {
         Raylib.DrawText(text, x, y, fontSize, color);
     }
+
+    public static void DrawGrid(int spacing, Color color)
+    {
+        for (int i = 0; i < Raylib.GetScreenWidth(); i += spacing)
+        {
+            Raylib.DrawLine(i, 0, i, Raylib.GetScreenHeight(), color);
+        }
+
+        for (int i = 0; i < Raylib.GetScreenHeight(); i += spacing)
+        {
+            Raylib.DrawLine(0, i, Raylib.GetScreenWidth(), i, color);
+        }
+    }
+
+    // Function to get the placement of the mouse in the grid
+    public static Vector2 GetMouseGridPosition(int spacing)
+    {
+        Vector2 mousePosition = Raylib.GetMousePosition();
+        int x = (int)(mousePosition.X / spacing) * spacing;
+        int y = (int)(mousePosition.Y / spacing) * spacing;
+
+        return new Vector2(x, y);
+    }
 }

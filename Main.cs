@@ -16,6 +16,7 @@ class Program
         // int tilesX = screenWidth / 32;
         // int tilesY = screenHeight / 32;
 
+        bool grid = false;
 
         Raylib.InitWindow(screenWidth, screenHeight, "Game");
         // Raylib.ToggleFullscreen();
@@ -31,6 +32,9 @@ class Program
         Player player = new Player();
         Cursor cursor = new Cursor();
 
+        // Create the 2D camera
+        Camera2D camera = new Camera2D();
+        Raylib.BeginMode2D(camera);
 
         Item crate = new Item(30, 1);
         crate.position = new Vector2(400, 225);
@@ -47,20 +51,29 @@ class Program
             // Get current fps
             Utils.DeltaTime = Raylib.GetFrameTime();
             
-            // Handle input
-            Input.HandleInput(player, cursor);
-            cursor.Update();
-            player.UpdateMovementState();
-            map.Update();
+            // Update the camera target to follow the player
+            camera.Target = new Vector2(player.position.X, player.position.Y);
+
+            // Updates
+            Update.UpdateGame(player, cursor, map, instances);
 
             Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.Black);
 
+                // Begin the mode with the camera
+
                 // Draw the map
                 map.Draw();
-                // Draw all entities
+                // Draw the player
                 player.Draw();
-                crate.Draw();
+                // Draw all the instances
+                foreach (Item instance in instances) {instance.Draw();}
+
+                // Toggle the grid
+                if (Raylib.IsKeyPressed(KeyboardKey.G)) {grid = !grid;}
+                if (grid) {Utils.DrawGrid(32, Color.DarkGray);}
+
+
                 // Draw the cursor
                 cursor.Draw();
 
