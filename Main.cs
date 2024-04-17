@@ -63,8 +63,6 @@ class Program
             Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.Black);
 
-                // Begin the mode with the camera
-
                 // Draw the map
                 map.Draw();
                 // Draw the player
@@ -75,7 +73,6 @@ class Program
                 // Toggle the grid
                 if (Raylib.IsKeyPressed(KeyboardKey.G)) {grid = !grid;}
                 if (grid) {Utils.DrawGrid(32, Color.DarkGray);}
-
 
                 // Draw the cursor
                 cursor.Draw();

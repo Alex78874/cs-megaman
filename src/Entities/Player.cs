@@ -7,10 +7,16 @@ public class Player
     private Texture2D sprite;
     public Vector2 position;
 
+    // public SpriteAnimation animation;
+    public Animation animation;
+
+    private float scale = 5.0f;
+
     private float orientation;
     private float walkingSpeed = 5.0f;
     private float sprintingSpeed = 10.0f;
-    private float speed;
+    private int speed;
+
     public bool isSprinting { get; set; }
 
     // Player movement states
@@ -25,11 +31,20 @@ public class Player
 
     public Player()
     {
-        string imagePath = $"res/{GetType().Name}/body.png";
-        sprite = Raylib.LoadTexture(imagePath);
+        string imagePath = $"res/{GetType().Name}/spritesheet.png";
 
-        position.X = 100;
-        position.Y = 100;
+        sprite = Raylib.LoadTexture(imagePath);
+        animation = new Animation(sprite, 12, new Rectangle[] {
+            new Rectangle(0, 3, 14, 48),
+            new Rectangle(14, 23, 28, 28),
+            new Rectangle(45, 26, 40, 25),
+            new Rectangle(88, 26, 34, 25),
+            new Rectangle(125, 25, 26, 26),
+            new Rectangle(154, 23, 24, 28)
+        });
+        // animation = new SpriteAnimation(sprite, 9, 0.1f);
+
+        position = new Vector2(100, 100);
     }
 
     ~Player()
@@ -39,60 +54,40 @@ public class Player
 
     public void Draw()
     {
-        try
-        {
-            Rectangle src = new Rectangle(0.0f, 0.0f, sprite.Width, sprite.Height);
-            Rectangle dst = new Rectangle(position.X, position.Y, sprite.Width, sprite.Height);
+        Rectangle src = new Rectangle(0.0f, 0.0f, sprite.Width * scale, sprite.Height * scale);
+        Rectangle dst = new Rectangle(position.X, position.Y, sprite.Width * scale, sprite.Height * scale);
 
-            Vector2 origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
+        Vector2 origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
 
-            Raylib.DrawTexturePro(sprite, src, dst, origin, orientation, Color.White);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred in the Draw method: {ex.Message}");
-        }
+        animation.DrawAnimationPro(new Rectangle(position.X, position.Y, 32, 32), new Vector2(16, 16), orientation, Color.White);
+
+        // Raylib.DrawTexturePro(sprite, src, dst, origin, orientation, Color.White);
     }
 
     public void Move(int x, int y)
     {
-        try
-        {
-            float speed = MathF.Sqrt(x * x + y * y); // Calculate speed based on x and y values
+        speed = Convert.ToInt32(Math.Sqrt(x * x + y * y));
 
-            position.X += x * Utils.DeltaTime;
-            position.Y += y * Utils.DeltaTime;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred in the Move method: {ex.Message}");
-        }
+        position.X += x * Utils.DeltaTime;
+        position.Y += y * Utils.DeltaTime;
     }
 
     public void UpdateMovementState()
     {
-        if (Math.Abs(position.X) > 0 || Math.Abs(position.Y) > 0)
-        {
+        Console.WriteLine($"Abs X: {Math.Abs(position.X)}, Abs Y: {Math.Abs(position.Y)}");
+
+        if (Math.Abs(position.X) > 0 || Math.Abs(position.Y) > 0) {
             movementState = isSprinting ? MovementState.Sprinting : MovementState.Walking;
-        }
-        else
-        {
+        } else {
             movementState = MovementState.Idle;
         }
     }
 
     public void Orient(Cursor cursor)
     {
-        try
-        {
-            float distX = cursor.position.X - position.X;
-            float distY = cursor.position.Y - position.Y;
+        float distX = cursor.position.X - position.X;
+        float distY = cursor.position.Y - position.Y;
 
-            orientation = -MathF.Atan2(distX, distY) * (180 / MathF.PI);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred in the Orient method: {ex.Message}");
-        }
+        orientation = -MathF.Atan2(distX, distY) * (180 / MathF.PI);
     }
 }

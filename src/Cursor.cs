@@ -12,6 +12,7 @@ public class Cursor
         Classic,
         Building
     }
+    public CursorMode mode = CursorMode.Classic;
 
     private bool hasChangedCursor;
     private float rotationAngle;
