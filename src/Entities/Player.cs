@@ -10,7 +10,7 @@ public class Player
     // public SpriteAnimation animation;
     public Animation animation;
 
-    private float scale = 5.0f;
+    private float scale = 2.0f;
 
     private float orientation;
     private float walkingSpeed = 5.0f;
@@ -54,13 +54,7 @@ public class Player
 
     public void Draw()
     {
-        Rectangle src = new Rectangle(0.0f, 0.0f, sprite.Width * scale, sprite.Height * scale);
-        Rectangle dst = new Rectangle(position.X, position.Y, sprite.Width * scale, sprite.Height * scale);
-
-        Vector2 origin = new Vector2(sprite.Width / 2, sprite.Height / 2);
-
-        animation.DrawAnimationPro(new Rectangle(position.X, position.Y, 32, 32), new Vector2(16, 16), orientation, Color.White);
-
+        animation.DrawAnimationPro(new Rectangle(position.X, position.Y, 32 * scale, 32 * scale), new Vector2(16 * scale, 16 * scale), 0, Color.White);
         // Raylib.DrawTexturePro(sprite, src, dst, origin, orientation, Color.White);
     }
 
