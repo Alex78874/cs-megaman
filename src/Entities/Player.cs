@@ -34,7 +34,7 @@ public class Player
         string imagePath = $"res/{GetType().Name}/spritesheet.png";
 
         sprite = Raylib.LoadTexture(imagePath);
-        animation = new Animation(sprite, 12, new Rectangle[] {
+        animation = new Animation(sprite, 10, new Rectangle[] {
             new Rectangle(0, 3, 14, 48),
             new Rectangle(14, 23, 28, 28),
             new Rectangle(45, 26, 40, 25),
@@ -54,7 +54,7 @@ public class Player
 
     public void Draw()
     {
-        animation.DrawAnimationPro(new Rectangle(position.X, position.Y, 32 * scale, 32 * scale), new Vector2(16 * scale, 16 * scale), 0, Color.White);
+        animation.DrawAnimationPro(new Rectangle(position.X, position.Y, 32 * scale, 32 * scale), new Vector2(16 * scale, 16 * scale), 0, Color.White, false);
         // Raylib.DrawTexturePro(sprite, src, dst, origin, orientation, Color.White);
     }
 
