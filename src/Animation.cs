@@ -36,6 +36,7 @@ public class Animation
         }
 
         Rectangle source = Rectangles[currentIndex];
+        dest = new Rectangle(dest.X + source.Width/2, dest.Y + source.Height/2, source.Width, source.Height);
         source.Width *= direction;
 
         // Draw the last frame and stop if the animation is not looping

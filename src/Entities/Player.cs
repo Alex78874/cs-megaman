@@ -43,10 +43,11 @@ public class Player
 
     public bool isSprinting { get; set; }
 
+    private Vector2 BoundingBoxSize = new Vector2(48, 64);
     public Rectangle BoundingBox {
         get {
             // Adjust the size to match your player's size
-            return new Rectangle(position.X, position.Y, 32, 32);
+            return new Rectangle(position.X - (BoundingBoxSize.X/2), position.Y - (BoundingBoxSize.Y/2), BoundingBoxSize.X, BoundingBoxSize.Y);
         }
     }
 
@@ -74,14 +75,14 @@ public class Player
                 new Rectangle(3, 54, 24, 28),
                 new Rectangle(30, 54, 24, 28) // Eye blinking
             ]) },
-            { State.Walking, new Animation(sprite, 10, [
+            { State.Walking, new Animation(sprite, 13, [
                 new Rectangle(3, 85, 23, 28),
-                new Rectangle(29, 87, 26, 26),
-                new Rectangle(58, 86, 21, 27),
+                new Rectangle(29, 87, 26, 28),
+                new Rectangle(58, 86, 21, 28),
                 new Rectangle(82, 85, 18, 28),
                 new Rectangle(103, 85, 20, 28),
-                new Rectangle(126, 87, 28, 26),
-                new Rectangle(156, 86, 21, 27),
+                new Rectangle(126, 87, 28, 28),
+                new Rectangle(156, 86, 21, 28),
                 new Rectangle(180, 85, 18, 28),
                 new Rectangle(201, 85, 21, 28),
             ]) },
@@ -98,12 +99,27 @@ public class Player
     }
 
     public void Draw()
-    {
+    {  
         // Loop animation if not idle
         loop = currentState != State.Spawning;
 
-        animations[currentState].DrawAnimationPro(new Rectangle(position.X, position.Y, 32 * scale, 32 * scale), new Vector2(16 * scale, 16 * scale), 0, Color.White, direction, loop);
-        // Raylib.DrawTexturePro(sprite, src, dst, origin, orientation, Color.White);
+        Vector2 origin = new Vector2(BoundingBox.X + BoundingBoxSize.X/2, BoundingBox.Y + BoundingBoxSize.Y/2);
+        Console.WriteLine(origin);
+
+        animations[currentState].DrawAnimationPro(
+            new Rectangle(position.X, position.Y, BoundingBoxSize.X * scale, BoundingBoxSize.Y * scale),
+            new Vector2(BoundingBoxSize.X/2, BoundingBoxSize.Y/2),
+            0,
+            Color.White,
+            direction,
+            loop
+        );
+        
+        // Draw the bounding box
+        Raylib.DrawRectangleLinesEx(BoundingBox, 1, Color.Red);
+
+        // Draw a circle at the player's position
+        Raylib.DrawCircle((int)position.X, (int)position.Y, 5, Color.Green);
     }
 
     public void Update(float deltaTime, Map map, Cursor cursor)
@@ -151,9 +167,9 @@ public class Player
             if (tile != null && tile.collidable && Raylib.CheckCollisionRecs(BoundingBox, tile.BoundingBox)) {
 
                 // If the player is falling, stop the fall
-                if (tile.position.Y - (BoundingBox.Height / 2) < position.Y && velocity.Y > 0) {
+                if (tile.position.Y - BoundingBox.Height < BoundingBox.Y && velocity.Y > 0) {
                     Raylib.DrawCircle((int)tile.position.X, (int)tile.position.Y, 5, Color.Red);
-                    position.Y = tile.position.Y + (BoundingBox.Height / 2) - BoundingBox.Height;
+                    position.Y = tile.position.Y - BoundingBox.Height/2;
                     velocity.Y = 0;
                     isJumping = false;
                 }
