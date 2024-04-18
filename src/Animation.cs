@@ -30,7 +30,7 @@ public class Animation
 
     }
 
-    public void DrawAnimationPro(Rectangle dest, Vector2 origin, float rotation, Color tint, int direction, bool loop = true)
+    public void DrawAnimationPro(Rectangle dest, Vector2 origin, float rotation, Color tint, int direction, float scale = 1, bool loop = true)
     {
         double elapsedTime = Raylib.GetTime() - TimeStarted;
 
@@ -41,7 +41,13 @@ public class Animation
         }
 
         Rectangle source = Rectangles[currentIndex];
-        dest = new Rectangle(dest.X + source.Width/2, dest.Y + dest.Height - source.Height, source.Width, source.Height);
+        dest = new Rectangle(
+            dest.X  + source.Width/2,
+            dest.Y + dest.Height - source.Height * scale,
+            source.Width * scale,
+            source.Height * scale
+        );
+
         source.Width *= direction;
 
         // Draw the last frame and stop if the animation is not looping

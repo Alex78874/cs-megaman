@@ -23,6 +23,7 @@ public class Player
         Idle,
         Walking,
         Jumping,
+        Landing,
     }
     public State currentState;
     private Dictionary<State, Animation> animations;
@@ -95,7 +96,12 @@ public class Player
             { State.Jumping, new Animation(sprite, 13, 32, 32, [
                 new Rectangle(32*0, 64, 32, 32),
                 new Rectangle(32*1, 64, 32, 32),
-                new Rectangle(32*3, 64, 32, 32),
+                new Rectangle(32*2, 64, 32, 32),
+            ]) },
+            { State.Landing, new Animation(sprite, 13, 32, 32, [
+                new Rectangle(32*4, 64, 32, 32),
+                new Rectangle(32*5, 64, 32, 32),
+                new Rectangle(32*6, 64, 32, 32),
             ]) },
             // Add more animations as needed
         };
@@ -111,13 +117,20 @@ public class Player
 
     public void Draw()
     {  
-        // Loop animation if not spawning
+        // Idle animation after spawning animation
         if (currentState == State.Spawning && animations[currentState].stop) {
             currentState = State.Idle;
         }
 
-        // Loop animation if not spawning and not jumping using loop
-        loop = currentState != State.Spawning && currentState != State.Jumping;
+        // Idle animation after landing animation
+        if (currentState == State.Landing && animations[currentState].stop) {
+            currentState = State.Idle;
+        }
+
+        // Dont loop theses animations
+        loop = currentState != State.Spawning &&
+                currentState != State.Jumping &&
+                currentState != State.Landing;
 
         animations[currentState].DrawAnimationPro(
             new Rectangle(position.X, position.Y, animations[currentState].width, animations[currentState].height),
@@ -125,14 +138,15 @@ public class Player
             0,
             Color.White,
             direction,
+            1,
             loop
         );
         
         // Draw the bounding box
-        Raylib.DrawRectangleLinesEx(BoundingBox, 1, Color.Red);
+        //Raylib.DrawRectangleLinesEx(BoundingBox, 1, Color.Red);
 
         // Draw a circle at the player's position
-        Raylib.DrawCircle((int)position.X, (int)position.Y, 5, Color.Green);
+        //Raylib.DrawCircle((int)position.X, (int)position.Y, 5, Color.Green);
     }
 
     public void Update(float deltaTime, Map map, Cursor cursor)
