@@ -9,7 +9,7 @@ public class Player
 
     // Space variables
     private Texture2D sprite;
-    private float scale = 1.0f;
+    private float scale = 2.0f;
     public Vector2 position;
     public Vector2 velocity;
 
@@ -34,16 +34,16 @@ public class Player
     private float sprintingSpeed = 10.0f;
 
 
-    private float jumpSpeed = 10f;
+    private float jumpSpeed = 1000f;
     private bool isJumping = false;
     private float moveSpeed = 5f;
-    private float gravity = 0.5f;
+    private float gravity = 28f;
 
     private int speed;
 
     public bool isSprinting { get; set; }
 
-    private Vector2 BoundingBoxSize = new Vector2(48, 64);
+    private Vector2 BoundingBoxSize = new Vector2(23, 32);
     public Rectangle BoundingBox {
         get {
             // Adjust the size to match your player's size
@@ -53,43 +53,54 @@ public class Player
 
     public Player()
     {
-        sprite = Raylib.LoadTexture($"res/{GetType().Name}/spritesheet.png");
+        sprite = Raylib.LoadTexture($"res/{GetType().Name}/player_sprites.png");
 
         animations = new Dictionary<State, Animation>
         {
-            { State.Spawning, new Animation(sprite, 10, [
-                new Rectangle(0, 3, 14, 48),
-                new Rectangle(14, 23, 28, 28),
-                new Rectangle(45, 26, 40, 25),
-                new Rectangle(88, 26, 34, 25),
-                new Rectangle(125, 25, 26, 26),
-                new Rectangle(154, 23, 24, 28)
+            { State.Spawning, new Animation(sprite, 13, 47, 54, [
+                new Rectangle(47*0, 97, 47, 54),
+                new Rectangle(47*0, 97, 47, 54),
+                new Rectangle(47*0, 97, 47, 54),
+                new Rectangle(47*0, 97, 47, 54),
+                new Rectangle(47*0, 97, 47, 54),
+                new Rectangle(47*0, 97, 47, 54),
+                new Rectangle(47*0, 97, 47, 54),
+                new Rectangle(47*0, 97, 47, 54), // Megaman beam
+
+                new Rectangle(47*1, 97, 47, 54),
+                new Rectangle(47*2, 97, 47, 54),
+                new Rectangle(47*3, 97, 47, 54),
+                new Rectangle(47*4, 97, 47, 54),
+                new Rectangle(47*5, 97, 47, 54)
             ]) },
-            { State.Idle, new Animation(sprite, 2, [
-                new Rectangle(3, 54, 24, 28),
-                new Rectangle(3, 54, 24, 28),
-                new Rectangle(3, 54, 24, 28),
-                new Rectangle(3, 54, 24, 28),
-                new Rectangle(3, 54, 24, 28),
-                new Rectangle(3, 54, 24, 28),
-                new Rectangle(3, 54, 24, 28),
-                new Rectangle(30, 54, 24, 28) // Eye blinking
+            { State.Idle, new Animation(sprite, 2, 32, 32, [
+                new Rectangle(0, 32, 32, 32),
+                new Rectangle(0, 32, 32, 32),
+                new Rectangle(0, 32, 32, 32),
+                new Rectangle(0, 32, 32, 32),
+                new Rectangle(0, 32, 32, 32),
+                new Rectangle(0, 32, 32, 32),
+                new Rectangle(32, 32, 32, 32) // Eye blinking
             ]) },
-            { State.Walking, new Animation(sprite, 13, [
-                new Rectangle(3, 85, 23, 28),
-                new Rectangle(29, 87, 26, 28),
-                new Rectangle(58, 86, 21, 28),
-                new Rectangle(82, 85, 18, 28),
-                new Rectangle(103, 85, 20, 28),
-                new Rectangle(126, 87, 28, 28),
-                new Rectangle(156, 86, 21, 28),
-                new Rectangle(180, 85, 18, 28),
-                new Rectangle(201, 85, 21, 28),
+            { State.Walking, new Animation(sprite, 13, 32, 32, [
+                new Rectangle(32*0, 0, 32, 32),
+                new Rectangle(32*1, 0, 32, 32),
+                new Rectangle(32*3, 0, 32, 32),
+                new Rectangle(32*4, 0, 32, 32),
+                new Rectangle(32*5, 0, 32, 32),
+                new Rectangle(32*6, 0, 32, 32),
+                new Rectangle(32*7, 0, 32, 32),
+                new Rectangle(32*8, 0, 32, 32),
+            ]) },
+            { State.Jumping, new Animation(sprite, 13, 32, 32, [
+                new Rectangle(32*0, 64, 32, 32),
+                new Rectangle(32*1, 64, 32, 32),
+                new Rectangle(32*3, 64, 32, 32),
             ]) },
             // Add more animations as needed
         };
 
-        currentState = State.Idle;
+        currentState = State.Spawning;
         position = new Vector2(100, 100);
     }
 
@@ -100,15 +111,17 @@ public class Player
 
     public void Draw()
     {  
-        // Loop animation if not idle
-        loop = currentState != State.Spawning;
+        // Loop animation if not spawning
+        if (currentState == State.Spawning && animations[currentState].stop) {
+            currentState = State.Idle;
+        }
 
-        Vector2 origin = new Vector2(BoundingBox.X + BoundingBoxSize.X/2, BoundingBox.Y + BoundingBoxSize.Y/2);
-        Console.WriteLine(origin);
+        // Loop animation if not spawning and not jumping using loop
+        loop = currentState != State.Spawning && currentState != State.Jumping;
 
         animations[currentState].DrawAnimationPro(
-            new Rectangle(position.X, position.Y, BoundingBoxSize.X * scale, BoundingBoxSize.Y * scale),
-            new Vector2(BoundingBoxSize.X/2, BoundingBoxSize.Y/2),
+            new Rectangle(position.X, position.Y, animations[currentState].width, animations[currentState].height),
+            new Vector2(animations[currentState].width, animations[currentState].height - BoundingBoxSize.Y/2),
             0,
             Color.White,
             direction,
@@ -128,35 +141,37 @@ public class Player
         Orient(cursor);
 
         // Apply gravity
-        velocity.Y += gravity;
+        velocity.Y += gravity * deltaTime;
 
         // Sprinting
         moveSpeed = Raylib.IsKeyDown(KeyboardKey.LeftShift) ? 300 : 150;
 
         // Check for jump input
-        if (Raylib.IsKeyPressed(KeyboardKey.Space) && !isJumping)
-        {
-            velocity.Y = -jumpSpeed;
-            isJumping = true;
-            currentState = State.Jumping;
-        }
+        if (currentState != State.Spawning) {
+            if (Raylib.IsKeyPressed(KeyboardKey.Space) && !isJumping)
+            {
+                velocity.Y = -jumpSpeed * deltaTime;
+                isJumping = true;
+                currentState = State.Jumping;
+            }
 
-        // Check for horizontal movement input
-        if (Raylib.IsKeyDown(KeyboardKey.Left) || Raylib.IsKeyDown(KeyboardKey.A))
-        {
-            velocity.X = -moveSpeed * deltaTime;
-            currentState = State.Walking;
-            direction = -1;
-        }
-        else if (Raylib.IsKeyDown(KeyboardKey.Right) || Raylib.IsKeyDown(KeyboardKey.D))
-        {
-            velocity.X = moveSpeed * deltaTime;
-            currentState = State.Walking;
-            direction = 1;
-        }
-        else {
-            velocity.X = 0;
-            currentState = State.Idle;
+            // Check for horizontal movement input
+            if (Raylib.IsKeyDown(KeyboardKey.Left) || Raylib.IsKeyDown(KeyboardKey.A))
+            {
+                velocity.X = -moveSpeed * deltaTime;
+                currentState = State.Walking;
+                direction = -1;
+            }
+            else if (Raylib.IsKeyDown(KeyboardKey.Right) || Raylib.IsKeyDown(KeyboardKey.D))
+            {
+                velocity.X = moveSpeed * deltaTime;
+                currentState = State.Walking;
+                direction = 1;
+            }
+            else {
+                velocity.X = 0;
+                currentState = State.Idle;
+            }
         }
 
         // Apply velocity to position

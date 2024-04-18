@@ -5,15 +5,20 @@ public class Animation
 {
     public Texture2D Atlas { get; set; }
     public int FramesPerSecond { get; set; }
+    public int width { get; set; }
+    public int height { get; set; }
+
     public double TimeStarted { get; set; }
     public Rectangle[] Rectangles { get; set; }
 
     private int currentIndex = 0;
-    private bool stop = false;
+    public bool stop = false;
 
-    public Animation(Texture2D atlas, int framesPerSecond, Rectangle[] rectangles)
+    public Animation(Texture2D atlas, int framesPerSecond, int width, int height, Rectangle[] rectangles)
     {
         Atlas = atlas;
+        this.width = width;
+        this.height = height;
         FramesPerSecond = framesPerSecond;
         TimeStarted = Raylib.GetTime();
         Rectangles = new Rectangle[rectangles.Length];
@@ -36,7 +41,7 @@ public class Animation
         }
 
         Rectangle source = Rectangles[currentIndex];
-        dest = new Rectangle(dest.X + source.Width/2, dest.Y + source.Height/2, source.Width, source.Height);
+        dest = new Rectangle(dest.X + source.Width/2, dest.Y + dest.Height - source.Height, source.Width, source.Height);
         source.Width *= direction;
 
         // Draw the last frame and stop if the animation is not looping
