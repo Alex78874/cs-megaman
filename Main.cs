@@ -5,6 +5,7 @@ using Raylib_cs;
 class Program
 {
     public static List<Item> instances = new List<Item>();
+    public static List<Tile> tiles = new List<Tile>();
 
     static void Main(string[] args)
     {
@@ -60,6 +61,13 @@ class Program
             // Updates
             Update.UpdateGame(player, cursor, map, instances);
 
+            // Check for collisions with the player and the tiles
+            foreach (Tile tile in tiles) {
+                if (tile.collidable && Raylib.CheckCollisionRecs(player.BoundingBox, tile.BoundingBox)) {
+                    Console.WriteLine("Collision detected");
+                }
+            }
+
             Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.Black);
 
@@ -68,11 +76,17 @@ class Program
                 // Draw the player
                 player.Draw();
                 // Draw all the instances
-                foreach (Item instance in instances) {instance.Draw();}
+                foreach (Item instance in instances) {
+                    instance.Draw();
+                }
 
                 // Toggle the grid
-                if (Raylib.IsKeyPressed(KeyboardKey.G)) {grid = !grid;}
-                if (grid) {Utils.DrawGrid(32, Color.DarkGray);}
+                if (Raylib.IsKeyPressed(KeyboardKey.G)) {
+                    grid = !grid;
+                }
+                if (grid) {
+                    Utils.DrawGrid(32, Color.DarkGray);
+                }
 
                 // Draw the cursor
                 cursor.Draw();

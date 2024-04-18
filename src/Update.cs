@@ -3,10 +3,9 @@ using Raylib_cs;
 
 class Update {
     // Update the player
-    public static void UpdatePlayer(Player player, Cursor cursor) {
-        Input.HandleInput(player, cursor);
+    public static void UpdatePlayer(Player player, Cursor cursor, Map map) {
+        player.Update(Utils.DeltaTime, map, cursor);
         cursor.Update();
-        player.UpdateMovementState();
     }
 
     // Update the map
@@ -21,7 +20,7 @@ class Update {
 
     // Update the game
     public static void UpdateGame(Player player, Cursor cursor, Map map, List<Item> instances) {
-        UpdatePlayer(player, cursor);
+        UpdatePlayer(player, cursor, map);
         UpdateMap(map);
         UpdateInstances(instances);
 

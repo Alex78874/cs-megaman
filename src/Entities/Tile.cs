@@ -9,7 +9,16 @@ public class Tile
     public Color color;
     public int type;
 
+    public bool collidable = true;
+
     private string tileDirectory;
+
+    public Rectangle BoundingBox {
+        get {
+            // Adjust the size to match your player's size
+            return new Rectangle(position.X, position.Y, 32, 32);
+        }
+    }
 
     public Tile(int tileSize, int type)
     {

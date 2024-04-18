@@ -20,7 +20,12 @@ public class Animation
         rectangles.CopyTo(Rectangles, 0);
     }
 
-    public void DrawAnimationPro(Rectangle dest, Vector2 origin, float rotation, Color tint, bool loop = true)
+    public void Update()
+    {
+
+    }
+
+    public void DrawAnimationPro(Rectangle dest, Vector2 origin, float rotation, Color tint, int direction, bool loop = true)
     {
         double elapsedTime = Raylib.GetTime() - TimeStarted;
 
@@ -31,14 +36,15 @@ public class Animation
         }
 
         Rectangle source = Rectangles[currentIndex];
-
-        Raylib.DrawTexturePro(Atlas, source, dest, origin, rotation, tint);
+        source.Width *= direction;
 
         // Draw the last frame and stop if the animation is not looping
         if (currentIndex == (Rectangles.Length - 1) && !loop) {
-            Console.WriteLine("Drawing last frame");
             Raylib.DrawTexturePro(Atlas, source, dest, origin, rotation, tint);
             stop = true;
+            return;
         }
+
+        Raylib.DrawTexturePro(Atlas, source, dest, origin, rotation, tint);
     }
 }

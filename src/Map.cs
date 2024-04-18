@@ -33,6 +33,7 @@ public class Map
                     blocks[i, j] = new Tile(blockSize, map[i, j]);
                     blocks[i, j].position.X = j * blockSize;
                     blocks[i, j].position.Y = i * blockSize;
+                    Program.tiles.Add(blocks[i, j]);
                 }
             }
         }
