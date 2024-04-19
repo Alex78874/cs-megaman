@@ -63,7 +63,7 @@ class Program
 
             // Check for collisions with the player and the tiles
             foreach (Tile tile in tiles) {
-                if (tile.collidable && Raylib.CheckCollisionRecs(player.BoundingBox, tile.BoundingBox)) {
+                if (tile.collidable && Raylib.CheckCollisionRecs(player.hitbox.BoundingBox, tile.BoundingBox)) {
                     Console.WriteLine("Collision detected");
                 }
             }

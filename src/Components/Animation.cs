@@ -27,7 +27,7 @@ public class Animation
 
     public void Update()
     {
-
+        
     }
 
     public void DrawAnimationPro(Rectangle dest, Vector2 origin, float rotation, Color tint, int direction, float scale = 1, bool loop = true)

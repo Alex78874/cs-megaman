@@ -7,14 +7,10 @@ using System.Reflection;
 public class Player
 {
 
-    // Space variables
+    // Main variables
     private Texture2D sprite;
-    private float scale = 2.0f;
     public Vector2 position;
     public Vector2 velocity;
-
-    // 1 = right -1 = left
-    public int direction = 1;
 
     // Animation and states
     public enum State
@@ -27,30 +23,23 @@ public class Player
     }
     public State currentState;
     private Dictionary<State, Animation> animations;
+
     private bool loop = false;
 
 
-    private float orientation;
-    private float walkingSpeed = 5.0f;
-    private float sprintingSpeed = 10.0f;
-
-
+    // Other variables
+    private float scale = 2.0f;
+    private float orientation = 0; // Angle in degrees
+    public int direction = 1; // 1 = right, -1 = left
     private float jumpSpeed = 1000f;
     private bool isJumping = false;
     private float moveSpeed = 5f;
     private float gravity = 28f;
 
-    private int speed;
+    public Hitbox hitbox => new Hitbox(new Vector2(28, 32), position);
+
 
     public bool isSprinting { get; set; }
-
-    private Vector2 BoundingBoxSize = new Vector2(23, 32);
-    public Rectangle BoundingBox {
-        get {
-            // Adjust the size to match your player's size
-            return new Rectangle(position.X - (BoundingBoxSize.X/2), position.Y - (BoundingBoxSize.Y/2), BoundingBoxSize.X, BoundingBoxSize.Y);
-        }
-    }
 
     public Player()
     {
@@ -134,7 +123,7 @@ public class Player
 
         animations[currentState].DrawAnimationPro(
             new Rectangle(position.X, position.Y, animations[currentState].width, animations[currentState].height),
-            new Vector2(animations[currentState].width, animations[currentState].height - BoundingBoxSize.Y/2),
+            new Vector2(animations[currentState].width, animations[currentState].height - hitbox.Size.Y/2),
             0,
             Color.White,
             direction,
@@ -193,12 +182,12 @@ public class Player
 
         // Check for collisions with tiles
         foreach (Tile tile in map.blocks) {
-            if (tile != null && tile.collidable && Raylib.CheckCollisionRecs(BoundingBox, tile.BoundingBox)) {
+            if (tile != null && tile.collidable && Raylib.CheckCollisionRecs(hitbox.BoundingBox, tile.BoundingBox)) {
 
                 // If the player is falling, stop the fall
-                if (tile.position.Y - BoundingBox.Height < BoundingBox.Y && velocity.Y > 0) {
+                if (tile.position.Y - hitbox.Size.Y < hitbox.Position.Y && velocity.Y > 0) {
                     Raylib.DrawCircle((int)tile.position.X, (int)tile.position.Y, 5, Color.Red);
-                    position.Y = tile.position.Y - BoundingBox.Height/2;
+                    position.Y = tile.position.Y - hitbox.Size.Y/2;
                     velocity.Y = 0;
                     isJumping = false;
                 }
@@ -207,14 +196,6 @@ public class Player
 
         // Update the animation
         animations[currentState].Update();
-    }
-
-    public void Move(int x, int y)
-    {
-        speed = Convert.ToInt32(Math.Sqrt(x * x + y * y));
-
-        position.X += x * Utils.DeltaTime;
-        position.Y += y * Utils.DeltaTime;
     }
 
     public void Orient(Cursor cursor)
